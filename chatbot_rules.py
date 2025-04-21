@@ -1,22 +1,3 @@
-# chatbot_rules.py
-
-# def get_hr_response(message):
-#     message = message.lower()
-    
-#     rules = {
-#         "leave policy": "Our leave policy includes 14 annual leave days and 10 casual leave days.",
-#         "salary day": "Salaries are processed on the 25th of every month.",
-#         "internship duration": "Internships typically last for 6 months.",
-#         "promotion criteria": "Promotions depend on performance reviews held bi-annually.",
-#         "contact hr": "You can contact HR at hr@foresight.com",
-#     }
-
-#     for key in rules:
-#         if key in message:
-#             return rules[key]
-
-#     return "I'm sorry, I couldn't understand that. Can you please rephrase?"
-
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
