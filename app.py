@@ -1,3 +1,5 @@
+# app.py
+
 from flask import Flask, request, jsonify, render_template
 import mysql.connector
 from chatbot_rules import get_hr_response

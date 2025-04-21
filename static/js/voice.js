@@ -1,3 +1,5 @@
+// isVoiceInput.js
+
 let isVoiceInput = false;
 
 function sendMessage() {
