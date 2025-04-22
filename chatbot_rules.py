@@ -11,29 +11,34 @@ rules = {
     "internship duration": "Internships typically last for 6 months.",
     "promotion": "Promotions depend on performance reviews held bi-annually.",
     "contact hr": "You can contact HR at hr@foresight.com or ext 102.",
-    "greeting": "Hello! How can I assist you today?",
+    "greeting_1": "Hello! How can I assist you today?",
+    "greeting_2": "Hi again! How can I help you?",
+    "greeting_3": "You seem friendly today 😊 What can I do for you?",
     "farewell": "Goodbye! Have a great day ahead!"
 }
 
 stemmer = PorterStemmer()
 
-# Global stemmed keyword map
-keyword_map = {
-    stemmer.stem("leave"): "leave policy",
-    stemmer.stem("vacation"): "leave policy",
-    stemmer.stem("salary"): "salary day",
-    stemmer.stem("pay"): "salary day",
-    stemmer.stem("intern"): "internship duration",
-    stemmer.stem("duration"): "internship duration",
-    stemmer.stem("promotion"): "promotion",
-    stemmer.stem("review"): "promotion",
-    stemmer.stem("contact"): "contact hr",
-    stemmer.stem("email"): "contact hr",
-    stemmer.stem("hi"): "greeting",
-    stemmer.stem("hello"): "greeting",
-    stemmer.stem("bye"): "farewell",
-    stemmer.stem("goodbye"): "farewell"
+# Define intent keywords as groups
+intent_keywords = {
+    "leave policy": ["leave", "vacation"],
+    "salary day": ["salary", "pay"],
+    "internship duration": ["intern", "duration"],
+    "promotion": ["promotion", "review"],
+    "contact hr": ["contact", "email"],
+    "greeting": ["hi", "hello"],
+    "farewell": ["bye", "goodbye"]
 }
+
+# Build stemmed keyword_map dynamically
+keyword_map = {}
+for intent, keywords in intent_keywords.items():
+    for word in keywords:
+        keyword_map[stemmer.stem(word)] = intent
+
+
+# To track how often each intent has been used
+intent_counter = {}
 
 def get_hr_response(message):
     message = message.lower()
@@ -47,6 +52,20 @@ def get_hr_response(message):
     for word in stemmed:
         if word in keyword_map:
             intent = keyword_map[word]
+
+            # Count the intent use
+            intent_counter[intent] = intent_counter.get(intent, 0) + 1
+            count = intent_counter[intent]
+
+            # Dynamic responses for greetings
+            if intent == "greeting":
+                if count == 1:
+                    return rules.get("greeting_1")
+                elif count == 2:
+                    return rules.get("greeting_2")
+                else:
+                    return rules.get("greeting_3")
+
             return rules.get(intent)
 
     return "I'm sorry, I couldn't understand that. Can you please rephrase?"
