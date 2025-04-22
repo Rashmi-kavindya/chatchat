@@ -1,5 +1,5 @@
 CREATE DATABASE IF NOT EXISTS hr_chatbot;
-USE hr_chatbot;
+USE chatbot;
 
 CREATE TABLE chat_log (
     id INT AUTO_INCREMENT PRIMARY KEY,

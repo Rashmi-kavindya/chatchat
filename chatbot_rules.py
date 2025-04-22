@@ -1,5 +1,3 @@
-# chatbot_rules.py
-
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
@@ -19,28 +17,32 @@ rules = {
 
 stemmer = PorterStemmer()
 
+# Global stemmed keyword map
+keyword_map = {
+    stemmer.stem("leave"): "leave policy",
+    stemmer.stem("vacation"): "leave policy",
+    stemmer.stem("salary"): "salary day",
+    stemmer.stem("pay"): "salary day",
+    stemmer.stem("intern"): "internship duration",
+    stemmer.stem("duration"): "internship duration",
+    stemmer.stem("promotion"): "promotion",
+    stemmer.stem("review"): "promotion",
+    stemmer.stem("contact"): "contact hr",
+    stemmer.stem("email"): "contact hr",
+    stemmer.stem("hi"): "greeting",
+    stemmer.stem("hello"): "greeting",
+    stemmer.stem("bye"): "farewell",
+    stemmer.stem("goodbye"): "farewell"
+}
+
 def get_hr_response(message):
     message = message.lower()
     tokens = word_tokenize(message)
     stemmed = [stemmer.stem(token) for token in tokens]
 
-    # Custom keyword-intent mapping
-    keyword_map = {
-        "leave": "leave policy",
-        "vacation": "leave policy",
-        "salary": "salary day",
-        "pay": "salary day",
-        "intern": "internship salary" if "salary" in stemmed else "internship duration",
-        "duration": "internship duration",
-        "promot": "promotion",
-        "review": "promotion",
-        "contact": "contact hr",
-        "email": "contact hr",
-        "hi": "greeting",
-        "hello": "greeting",
-        "bye": "farewell",
-        "goodbye": "farewell"
-    }
+    # Special case: intern + salary
+    if stemmer.stem("intern") in stemmed and stemmer.stem("salary") in stemmed:
+        return rules["internship salary"]
 
     for word in stemmed:
         if word in keyword_map:
