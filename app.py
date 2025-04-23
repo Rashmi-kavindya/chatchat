@@ -1,12 +1,11 @@
 # app.py
-
 from flask import Flask, request, jsonify, render_template
 import mysql.connector
 from chatbot_rules import get_hr_response
+from ai_response import get_ai_response
 
 app = Flask(__name__)
 
-# Database Connection
 def connect_db():
     return mysql.connector.connect(
         host="localhost",
@@ -23,6 +22,10 @@ def index():
 def chat():
     user_input = request.json['message']
     response = get_hr_response(user_input)
+
+    # If rule-based bot fails, use AI fallback
+    if response.startswith("I'm sorry") or response is None:
+        response = get_ai_response(user_input)
 
     # Save to DB
     conn = connect_db()
