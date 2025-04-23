@@ -14,6 +14,7 @@ rules = {
     "greeting_1": "Hello! How can I assist you today?",
     "greeting_2": "Hi again! How can I help you?",
     "greeting_3": "You seem friendly today 😊 What can I do for you?",
+    "greeting_4": "You've said hi quite a bit! 😄 What would you like to know?",
     "farewell": "Goodbye! Have a great day ahead!"
 }
 
@@ -63,8 +64,10 @@ def get_hr_response(message):
                     return rules.get("greeting_1")
                 elif count == 2:
                     return rules.get("greeting_2")
-                else:
+                elif count == 3:
                     return rules.get("greeting_3")
+                else:
+                    return rules.get("greeting_4")
 
             return rules.get(intent)
 

@@ -2,6 +2,11 @@
 
 let isVoiceInput = false;
 
+function handleVoiceClick() {
+  isVoiceInput = true;
+  startVoiceTyping();
+}
+
 function sendMessage() {
   const input = document.getElementById("user-input");
   const message = input.value.trim();
@@ -22,8 +27,9 @@ function sendMessage() {
       if (data.response) {
         addMessage(data.response, "bot");
         if (isVoiceInput) {
-          speakResponse(data.response);
-          isVoiceInput = false; // reset after speaking
+          speakResponse(data.response, () => {
+            isVoiceInput = false; // Reset only after speaking is done
+          });
         }
       }
     });
@@ -76,6 +82,7 @@ function startVoiceTyping() {
 }
 
 function speakResponse(text) {
+  console.log("Speaking:", text);
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = "en-US";
   speechSynthesis.speak(utterance);
