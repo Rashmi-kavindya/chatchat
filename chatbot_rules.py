@@ -1,4 +1,5 @@
 import nltk
+import random
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 
@@ -12,15 +13,21 @@ rules = {
     "promotion": "Promotions depend on performance reviews held bi-annually.",
     "contact hr": "You can contact HR at hr@foresight.com or ext 102.",
     "greeting_1": "Hello! How can I assist you today?",
-    "greeting_2": "Hi again! How can I help you?",
-    "greeting_3": "You seem friendly today 😊 What can I do for you?",
-    "greeting_4": "You've said hi quite a bit! 😄 What would you like to know?",
+    "greeting_2": "Hi there! Feel free to ask me anything about our HR policies.",
+    "greeting_3": "Good to see you! How can I help you today?",
+    "greeting_4": "Hey! I'm here to help you with any HR-related questions.",
     "farewell": "Goodbye! Have a great day ahead!"
 }
 
+greeting_responses = [
+    rules["greeting_1"],
+    rules["greeting_2"],
+    rules["greeting_3"],
+    rules["greeting_4"]
+]
+
 stemmer = PorterStemmer()
 
-# Define intent keywords as groups
 intent_keywords = {
     "leave policy": ["leave", "vacation"],
     "salary day": ["salary", "pay"],
@@ -31,22 +38,16 @@ intent_keywords = {
     "farewell": ["bye", "goodbye"]
 }
 
-# Build stemmed keyword_map dynamically
 keyword_map = {}
 for intent, keywords in intent_keywords.items():
     for word in keywords:
         keyword_map[stemmer.stem(word)] = intent
-
-
-# To track how often each intent has been used
-intent_counter = {}
 
 def get_hr_response(message):
     message = message.lower()
     tokens = word_tokenize(message)
     stemmed = [stemmer.stem(token) for token in tokens]
 
-    # Special case: intern + salary
     if stemmer.stem("intern") in stemmed and stemmer.stem("salary") in stemmed:
         return rules["internship salary"]
 
@@ -54,20 +55,8 @@ def get_hr_response(message):
         if word in keyword_map:
             intent = keyword_map[word]
 
-            # Count the intent use
-            intent_counter[intent] = intent_counter.get(intent, 0) + 1
-            count = intent_counter[intent]
-
-            # Dynamic responses for greetings
             if intent == "greeting":
-                if count == 1:
-                    return rules.get("greeting_1")
-                elif count == 2:
-                    return rules.get("greeting_2")
-                elif count == 3:
-                    return rules.get("greeting_3")
-                else:
-                    return rules.get("greeting_4")
+                return random.choice(greeting_responses)
 
             return rules.get(intent)
 
