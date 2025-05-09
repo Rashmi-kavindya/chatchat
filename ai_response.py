@@ -14,7 +14,7 @@ groq_api_key = os.getenv("GROQ_API_KEY")
 class State(TypedDict):
     messages: Annotated[list, add_messages]
 
-llm = ChatGroq(groq_api_key=groq_api_key, model_name="gemma2-9b-it")  # Or Gemma-2b-it if 7b is unavailable
+llm = ChatGroq(groq_api_key=groq_api_key, model_name="gemma2-9b-it") 
 
 def chatbot(state: State):
     return {"messages": llm.invoke(state["messages"])}
