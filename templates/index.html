@@ -50,11 +50,11 @@
     }
 
     .message-row.bot {
-      justify-content: flex-end;
+      justify-content: flex-start;
     }
 
     .message-row.user {
-      justify-content: flex-start;
+      justify-content: flex-end;
     }
 
     .message {
@@ -69,12 +69,12 @@
 
     .message.user {
       background-color: #b2ebf8;
-      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
     }
 
     .message.bot {
       background-color: #f8e98d;
-      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
     }
 
     .avatar {
@@ -168,11 +168,15 @@
     messageBubble.innerHTML = text;
 
     if (sender === "user") {
-      messageRow.appendChild(avatar);
       messageRow.appendChild(messageBubble);
+      messageRow.appendChild(avatar);
+      // messageRow.appendChild(avatar);
+      // messageRow.appendChild(messageBubble);
     } else {
-      messageRow.appendChild(messageBubble);
       messageRow.appendChild(avatar);
+      messageRow.appendChild(messageBubble);
+      // messageRow.appendChild(messageBubble);
+      // messageRow.appendChild(avatar);
     }
 
     chatBox.prepend(messageRow);
