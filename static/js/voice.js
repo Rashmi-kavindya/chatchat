@@ -1,4 +1,4 @@
-// isVoiceInput.js
+// voiceInput.js
 
 let isVoiceInput = false;
 
